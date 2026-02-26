@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "LeetCode AI Helper",
+  "version": "1.0.0",
+  "description": "Your AI companion for solving LeetCode problems and guiding you to the solution.",
+  "action": {
+    "default_popup": "index.html"
+  },
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://leetcode.com/problemset/*"],
+      "js": ["src/content.jsx"]
+    }
+  ]
+}
