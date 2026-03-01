@@ -1,24 +1,56 @@
 import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
 
+const scrapeLeetCodeData = () => {
+  // 1. Grab the title from the webpage title (e.g., "1. Two Sum - LeetCode")
+  const rawTitle = document.title || "";
+  const title = rawTitle.split('-')[0].trim(); 
+
+  // 2. Grab the problem description
+  // LeetCode uses dynamic class names, so we check a few reliable spots
+  let description = "Description not found.";
+  
+  const metaDescription = document.querySelector('meta[name="description"]');
+  const uiDescription = document.querySelector('.elfjS'); // Current LeetCode UI class for description text
+  
+  if (metaDescription && metaDescription.content) {
+    description = metaDescription.content;
+  } else if (uiDescription) {
+    description = uiDescription.innerText;
+  }
+
+  return { title, description };
+};
+
 function ContentApp() {
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [chatHistory, setChatHistory] = useState([]);
 
-  // Handles adding the user's message to the chat
   const handleSend = () => {
-    if (!message.trim()) return; // Prevent sending empty spaces
+    if (!message.trim()) return; 
     
-    // Add the user's message to the history
-    setChatHistory([...chatHistory, { role: 'user', content: message }]);
-    setMessage(''); // Clear the input field
+    // 1. Instantly show the user's message
+    const newHistory = [...chatHistory, { role: 'user', content: message }];
+    setChatHistory(newHistory);
+    setMessage(''); 
     
-    // NOTE: This is exactly where we will later add the code to 
-    // fetch the problem description and call the AI API!
+    // 2. Scrape the DOM
+    const { title, description } = scrapeLeetCodeData();
+
+    // 3. Temporarily echo back the scraped data as the "AI" response
+    // (We will replace this with the real API call next!)
+    setTimeout(() => {
+      setChatHistory([
+        ...newHistory, 
+        { 
+          role: 'assistant', 
+          content: `🔍 I see you are working on: "${title}". I have grabbed the description! Ready to send this to the AI API?` 
+        }
+      ]);
+    }, 500); // 500ms delay to make it feel like it's "thinking"
   };
 
-  // Allows hitting "Enter" to send
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       handleSend();
