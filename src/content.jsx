@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
+import ReactMarkdown from 'react-markdown';
 
 const scrapeLeetCodeData = () => {
   // 1. Grab the title from the webpage title (e.g., "1. Two Sum - LeetCode")
@@ -143,7 +144,7 @@ function ContentApp() {
               fontSize: '14px',
               lineHeight: '1.4'
             }}>
-              {msg.content}
+              <ReactMarkdown>{msg.content}</ReactMarkdown>
             </div>
           ))}
         </div>
