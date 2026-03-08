@@ -27,33 +27,54 @@ function ContentApp() {
   const [message, setMessage] = useState('');
   const [chatHistory, setChatHistory] = useState([]);
 
-  const handleSend = () => {
+  // --- UPDATED SEND LOGIC FOR GEMINI ---
+  const handleSend = async () => {
     if (!message.trim()) return; 
     
-    // 1. Instantly show the user's message
-    const newHistory = [...chatHistory, { role: 'user', content: message }];
-    setChatHistory(newHistory);
+    const userMessage = message;
+    const newHistory = [...chatHistory, { role: 'user', content: userMessage }];
+    setChatHistory([...newHistory, { role: 'assistant', content: 'Thinking... 🤔' }]);
     setMessage(''); 
-    
-    // 2. Scrape the DOM
-    const { title, description } = scrapeLeetCodeData();
 
-    // 3. Temporarily echo back the scraped data as the "AI" response
-    // (We will replace this with the real API call next!)
-    setTimeout(() => {
-      setChatHistory([
-        ...newHistory, 
-        { 
-          role: 'assistant', 
-          content: `🔍 I see you are working on: "${title}". I have grabbed the description! Ready to send this to the AI API?` 
-        }
-      ]);
-    }, 500); // 500ms delay to make it feel like it's "thinking"
-  };
+    try {
+      const result = await chrome.storage.local.get(['aiApiKey']);
+      const apiKey = result.aiApiKey;
 
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      handleSend();
+      if (!apiKey) {
+        setChatHistory([...newHistory, { role: 'assistant', content: '⚠️ No API Key found!' }]);
+        return;
+      }
+
+      const { title, description } = scrapeLeetCodeData();
+
+      // NOTICE THE URL CHANGE HERE: We are calling Google now, not OpenAI!
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          contents: [{
+            parts: [{
+              text: `You are an expert Data Structures and Algorithms tutor. The user is working on the LeetCode problem "${title}". Context: ${description}. The user asks: "${userMessage}". Be concise, helpful, and format any code blocks clearly.`
+            }]
+          }]
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setChatHistory([...newHistory, { role: 'assistant', content: `⚠️ API Error: ${data.error?.message || 'Something went wrong'}` }]);
+        return;
+      }
+
+      const aiReply = data.candidates[0].content.parts[0].text;
+      setChatHistory([...newHistory, { role: 'assistant', content: aiReply }]);
+
+    } catch (error) {
+      console.error("Fetch error:", error);
+      setChatHistory([...newHistory, { role: 'assistant', content: `⚠️ Network Error: Could not reach the AI.` }]);
     }
   };
 
@@ -134,7 +155,6 @@ function ContentApp() {
           type="text" 
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          onKeyDown={handleKeyDown}
           placeholder="Ask a question..." 
           style={{
             flex: 1,
