@@ -115,7 +115,7 @@ function ContentApp() {
       bottom: '30px',
       right: '30px',
       width: isExpanded ? '600px' : '350px',
-      height: isExpanded ? 'auto' : 'auto',
+      height: isExpanded ? '60vh' : 'auto',
       transition: 'all 0.3s ease',
       backgroundColor: '#1e1e1e',
       borderRadius: '12px',
