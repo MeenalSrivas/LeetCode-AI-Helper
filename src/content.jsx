@@ -6,6 +6,7 @@ const scrapeLeetCodeData = () => {
   // 1. Grab the title from the webpage title (e.g., "1. Two Sum - LeetCode")
   const rawTitle = document.title || "";
   const title = rawTitle.split('-')[0].trim(); 
+  
 
   // 2. Grab the problem description
   // LeetCode uses dynamic class names, so we check a few reliable spots
@@ -27,6 +28,7 @@ function ContentApp() {
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [chatHistory, setChatHistory] = useState([]);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   // --- UPDATED SEND LOGIC FOR GEMINI ---
   const handleSend = async () => {
@@ -100,6 +102,7 @@ function ContentApp() {
           fontSize: '15px',
         }}
       >
+      
         Ask AI 🤖
       </div>
     );
@@ -111,7 +114,9 @@ function ContentApp() {
       position: 'fixed',
       bottom: '30px',
       right: '30px',
-      width: '400px',
+      width: isExpanded ? '600px' : '350px',
+      height: isExpanded ? 'auto' : 'auto',
+      transition: 'all 0.3s ease',
       backgroundColor: '#1e1e1e',
       borderRadius: '12px',
       padding: '12px',
@@ -122,6 +127,28 @@ function ContentApp() {
       zIndex: 999999,
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif'
     }}>
+      {/*Expand and shrink button*/}
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        borderBottom: '1px solid #333',
+        paddingBottom: '8px'
+      }}>
+        <span style={{ color: '#fff', fontWeight: 'bold' }}>Ask AI</span>
+        <button 
+          onClick={() => setIsExpanded(!isExpanded)}
+          style={{
+            background: 'transparent',
+            border: 'none',
+            color: '#FFA116',
+            cursor: 'pointer',
+            fontSize: '14px',
+            fontWeight: 'bold'
+          }}
+        >
+          {isExpanded ? '↙️ Shrink' : '↗️ Expand'}
+        </button>
+      </div>
       
       {/* Dynamic Chat History Area (Only shows if there are messages) */}
       {chatHistory.length > 0 && (
