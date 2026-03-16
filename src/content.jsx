@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import ReactMarkdown from 'react-markdown';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 const scrapeLeetCodeData = () => {
   // 1. Grab the title from the webpage title (e.g., "1. Two Sum - LeetCode")
@@ -115,7 +117,7 @@ function ContentApp() {
       bottom: '30px',
       right: '30px',
       width: isExpanded ? '600px' : '350px',
-      height: isExpanded ? '60vh' : 'auto',
+      height: isExpanded ? 'auto' : 'auto',
       transition: 'all 0.3s ease',
       backgroundColor: '#1e1e1e',
       borderRadius: '12px',
@@ -171,7 +173,41 @@ function ContentApp() {
               fontSize: '14px',
               lineHeight: '1.4'
             }}>
-              <ReactMarkdown>{msg.content}</ReactMarkdown>
+              <ReactMarkdown
+                components={{
+                  code({ node, inline, className, children, ...props }) {
+                    const match = /language-(\w+)/.exec(className || '');
+                    
+                    return !inline && match ? (
+                      <SyntaxHighlighter
+                        style={vscDarkPlus}
+                        language={match[1]}
+                        PreTag="div"
+                        customStyle={{
+                          borderRadius: '6px',
+                          margin: '8px 0',
+                          backgroundColor: '#1e1e1e', // Matches your chat UI
+                          padding: '12px'
+                        }}
+                        {...props}
+                      >
+                        {String(children).replace(/\n$/, '')}
+                      </SyntaxHighlighter>
+                    ) : (
+                      <code style={{
+                        backgroundColor: '#444',
+                        padding: '2px 4px',
+                        borderRadius: '4px',
+                        fontFamily: 'monospace'
+                      }} {...props}>
+                        {children}
+                      </code>
+                    )
+                  }
+                }}
+              >
+                {msg.content}
+              </ReactMarkdown>
             </div>
           ))}
         </div>
@@ -261,7 +297,7 @@ const root = createRoot(wrapper);
 root.render(
   <React.StrictMode>
     {/* Re-enable pointer events ONLY for our actual React components */}
-    <div style={{ pointerEvents: 'auto', width: '100%', height: '100%' }}>
+    <div style={{ pointerEvents: 'auto'}}>
       <ContentApp />
     </div>
   </React.StrictMode>
