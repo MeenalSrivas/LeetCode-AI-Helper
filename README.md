@@ -6,10 +6,9 @@
 ![Chrome Extensions](https://img.shields.io/badge/Chrome_Extension-4285F4?style=for-the-badge&logo=google-chrome&logoColor=white)
 
 Your personal, context-aware Data Structures and Algorithms tutor injected directly into the LeetCode environment.
+<img width="1879" height="773" alt="Screenshot 2026-03-21 200346" src="https://github.com/user-attachments/assets/b675032b-dbd7-4911-afa5-654b07d28bc2" />
 
-<div align="center">
-  <img src="https://via.placeholder.com/800x450.png?text=Add+a+GIF+or+Screenshot+of+your+Extension+Here" alt="LeetCode AI Helper Demo" width="100%" />
-</div>
+
 
 ## ✨ Features
 
