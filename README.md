@@ -5,10 +5,20 @@
 ![Google Gemini](https://img.shields.io/badge/Google%20Gemini-8E75B2?style=for-the-badge&logo=google&logoColor=white)
 ![Chrome Extensions](https://img.shields.io/badge/Chrome_Extension-4285F4?style=for-the-badge&logo=google-chrome&logoColor=white)
 
-Your personal, context-aware Data Structures and Algorithms tutor injected directly into the LeetCode environment.
+Your personal, context-aware Data Structures and Algorithms tutor injected directly into the LeetCode environment
+
 <img width="1879" height="773" alt="Screenshot 2026-03-21 200346" src="https://github.com/user-attachments/assets/b675032b-dbd7-4911-afa5-654b07d28bc2" />
 
+## 🎁 How to Install (For Non-Developers)
 
+If you just want to use the extension and don't want to deal with code or terminals, follow these simple steps:
+
+1. **Download the files:** Click the green **"<> Code"** button at the top of this repository and select **"Download ZIP"**.
+2. **Extract the folder:** Find the downloaded `.zip` file on your computer and extract/unzip it. Inside, you will find a folder named `dist`. Drag that `dist` folder onto your Desktop so it's easy to find.
+3. **Open Chrome Extensions:** Open Google Chrome, type `chrome://extensions/` into the URL bar, and hit Enter.
+4. **Turn on Developer Mode:** Look in the top right corner of the page and toggle the **Developer mode** switch to **ON**.
+5. **Load the Extension:** Click the **Load unpacked** button that appears in the top left corner. A file browser will open—select that `dist` folder you put on your Desktop.
+6. **You're done!** Pin the extension to your Chrome toolbar, click it to add your Gemini API key, and open any LeetCode problem!
 
 ## ✨ Features
 
