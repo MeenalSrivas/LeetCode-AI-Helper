@@ -282,9 +282,8 @@ if (existingContainer) {
 const wrapper = document.createElement('div');
 wrapper.id = 'leetcode-ai-helper-wrapper';
 // Let clicks pass through the invisible wrapper so it doesn't block the screen
-wrapper.style.position = 'fixed';
-wrapper.style.top = '0';
-wrapper.style.left = '0';
+wrapper.style.position = 'absolute';
+wrapper.style.top = '10px';
 wrapper.style.width = '100%';
 wrapper.style.height = '100%';
 wrapper.style.pointerEvents = 'none'; 
@@ -297,7 +296,7 @@ const root = createRoot(wrapper);
 root.render(
   <React.StrictMode>
     {/* Re-enable pointer events ONLY for our actual React components */}
-    <div style={{ pointerEvents: 'auto'}}>
+    <div style={{ pointerEvents: 'auto' }}>
       <ContentApp />
     </div>
   </React.StrictMode>
